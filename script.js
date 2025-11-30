@@ -126,7 +126,7 @@ function copyIP() {
 
 // Перенаправление в Telegram
 function redirectToTelegram(type) {
-    const telegramUrl = 'https://t.me/bloody_butterfly_cs2';
+    const telegramUrl = 'https://t.me/cssigrovoyray';
     
     // Можно добавить разные ссылки для разных типов
     const links = {
