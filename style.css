@@ -1,1508 +1,874 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bloody Butterfly | Официальный сервер 2026</title>
-    <style>
-        /* === ОСНОВНЫЕ СТИЛИ И ПЕРЕМЕННЫЕ === */
-        :root {
-            --blood-red: #ff0066;
-            --dark-blood: #8b0000;
-            --neon-pink: #ff00aa;
-            --dark-bg: #0a0a0a;
-            --darker-bg: #050505;
-            --text-light: #ffffff;
-            --text-gray: #cccccc;
-            --accent-gold: #ffd700;
-            --accent-blue: #00ffff;
-            --new-year-red: #ff0000;
-            --new-year-green: #00ff00;
-            --new-year-gold: #ffd700;
-            --matrix-green: #00ff00;
-            --purple-neon: #bf00ff;
-            --orange-neon: #ff7700;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
-            color: var(--text-light);
-            font-family: 'Arial', sans-serif;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* === СИСТЕМА ЧАСТИЦ И ЭФФЕКТОВ === */
-        .particles-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -2;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--blood-red);
-            border-radius: 50%;
-            animation: particle-float 20s infinite linear;
-            opacity: 0;
-        }
-
-        @keyframes particle-float {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.7;
-            }
-            90% {
-                opacity: 0.3;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        /* === 2026 СНЕГ С УЛУЧШЕННЫМИ ЭФФЕКТАМИ === */
-        .snow-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .snowflake {
-            position: absolute;
-            color: var(--blood-red);
-            font-size: 20px;
-            opacity: 0.8;
-            animation-name: snow-fall;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
-            user-select: none;
-            text-shadow: 0 0 10px currentColor;
-        }
-
-        @keyframes snow-fall {
-            0% {
-                transform: translateY(-100px) rotate(0deg) scale(0.5);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            90% {
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateY(100vh) rotate(360deg) scale(1.2);
-                opacity: 0;
-            }
-        }
-
-        /* === ПУЛЬСИРУЮЩИЕ ОБЛАКА === */
-        .pulse-clouds {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -2;
-        }
-
-        .pulse-cloud {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255,0,102,0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: pulse-cloud 8s infinite ease-in-out;
-            filter: blur(40px);
-        }
-
-        @keyframes pulse-cloud {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 0.3;
-            }
-            50% {
-                transform: scale(1.5);
-                opacity: 0.1;
-            }
-        }
-
-        /* === ШАПКА САЙТА С АНИМАЦИЯМИ === */
-        .header {
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 2px solid var(--blood-red);
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            padding: 15px 0;
-            box-shadow: 0 0 30px rgba(255, 0, 102, 0.3);
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 30px;
-        }
-
-        .logo {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: var(--blood-red);
-            text-shadow: 0 0 20px var(--blood-red), 0 0 40px var(--neon-pink);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .logo::before {
-            content: "🦋";
-            font-size: 2em;
-            animation: butterfly-flap 2s infinite, butterfly-glow 3s infinite alternate;
-        }
-
-        @keyframes butterfly-flap {
-            0%, 100% { 
-                transform: rotate(0deg) scale(1);
-            }
-            25% { 
-                transform: rotate(-5deg) scale(1.1);
-            }
-            75% { 
-                transform: rotate(5deg) scale(1.1);
-            }
-        }
-
-        @keyframes butterfly-glow {
-            0% {
-                filter: drop-shadow(0 0 5px var(--blood-red));
-            }
-            100% {
-                filter: drop-shadow(0 0 20px var(--neon-pink));
-            }
-        }
-
-        .logo:hover {
-            transform: scale(1.05);
-            text-shadow: 0 0 30px var(--blood-red), 0 0 60px var(--neon-pink);
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 25px;
-            list-style: none;
-        }
-
-        .nav-link {
-            color: var(--text-light);
-            text-decoration: none;
-            font-weight: bold;
-            padding: 15px 30px;
-            border-radius: 12px;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            background: rgba(255, 0, 102, 0.15);
-            border: 2px solid var(--blood-red);
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.6s ease;
-        }
-
-        .nav-link:hover::before {
-            left: 100%;
-        }
-
-        .nav-link:hover {
-            background: rgba(255, 0, 102, 0.4);
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 10px 25px rgba(255, 0, 102, 0.5);
-            border-color: var(--neon-pink);
-        }
-
-        .nav-link.active {
-            background: var(--blood-red);
-            color: var(--text-light);
-            box-shadow: 0 0 30px var(--blood-red), 0 0 60px rgba(255, 0, 102, 0.3);
-            transform: translateY(-2px);
-            animation: nav-pulse 2s infinite;
-        }
-
-        @keyframes nav-pulse {
-            0%, 100% {
-                box-shadow: 0 0 30px var(--blood-red), 0 0 60px rgba(255, 0, 102, 0.3);
-            }
-            50% {
-                box-shadow: 0 0 40px var(--blood-red), 0 0 80px rgba(255, 0, 102, 0.5);
-            }
-        }
-
-        /* === ОСНОВНОЙ КОНТЕНТ === */
-        .main-content {
-            margin-top: 100px;
-            min-height: calc(100vh - 180px);
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 50px 30px;
-        }
-
-        .page {
-            display: none;
-            animation: page-fade 0.5s ease;
-        }
-
-        @keyframes page-fade {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        .section-title {
-            font-size: 4rem;
-            text-align: center;
-            margin-bottom: 60px;
-            color: var(--blood-red);
-            text-shadow: 0 0 20px var(--blood-red), 0 0 40px var(--neon-pink);
-            position: relative;
-            animation: title-glow 3s infinite alternate, title-float 6s ease-in-out infinite;
-        }
-
-        @keyframes title-glow {
-            0% {
-                text-shadow: 0 0 20px var(--blood-red), 0 0 40px var(--neon-pink);
-            }
-            100% {
-                text-shadow: 0 0 30px var(--blood-red), 0 0 60px var(--neon-pink), 0 0 80px var(--purple-neon);
-            }
-        }
-
-        @keyframes title-float {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 4px;
-            background: linear-gradient(90deg, transparent, var(--blood-red), var(--neon-pink), transparent);
-            border-radius: 2px;
-            animation: line-glow 2s infinite alternate;
-        }
-
-        @keyframes line-glow {
-            0% {
-                box-shadow: 0 0 10px var(--blood-red);
-            }
-            100% {
-                box-shadow: 0 0 20px var(--neon-pink), 0 0 30px var(--purple-neon);
-            }
-        }
-
-        /* === ГЛАВНАЯ СТРАНИЦА С ЭФФЕКТАМИ === */
-        .hero {
-            text-align: center;
-            padding: 150px 0;
-            background: radial-gradient(circle at center, rgba(255,0,102,0.2) 0%, transparent 70%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent 30%, rgba(255,0,102,0.1) 50%, transparent 70%);
-            animation: hero-shine 8s infinite linear;
-        }
-
-        @keyframes hero-shine {
-            0% {
-                transform: translateX(-100%);
-            }
-            100% {
-                transform: translateX(100%);
-            }
-        }
-
-        .hero-title {
-            font-size: 5rem;
-            margin-bottom: 30px;
-            background: linear-gradient(45deg, var(--blood-red), var(--neon-pink), var(--accent-blue), var(--purple-neon));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: rainbow-text 8s infinite linear, title-bounce 3s ease-in-out infinite;
-            text-shadow: 0 0 30px rgba(255, 0, 102, 0.5);
-            position: relative;
-        }
-
-        @keyframes rainbow-text {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
-        }
-
-        @keyframes title-bounce {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.02);
-            }
-        }
-
-        .hero-subtitle {
-            font-size: 1.8rem;
-            margin-bottom: 50px;
-            color: var(--text-gray);
-            text-shadow: 0 0 10px rgba(255,255,255,0.5);
-            animation: subtitle-glow 4s infinite alternate;
-        }
-
-        @keyframes subtitle-glow {
-            0% {
-                text-shadow: 0 0 10px rgba(255,255,255,0.5);
-            }
-            100% {
-                text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 30px var(--accent-blue);
-            }
-        }
-
-        .server-ip {
-            background: rgba(255, 255, 255, 0.1);
-            border: 3px solid var(--blood-red);
-            border-radius: 15px;
-            padding: 20px 40px;
-            font-size: 1.5rem;
-            color: var(--text-light);
-            margin: 30px 0;
-            display: inline-block;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            position: relative;
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            text-shadow: 0 0 10px var(--blood-red);
-            backdrop-filter: blur(10px);
-            animation: ip-pulse 2s infinite;
-        }
-
-        @keyframes ip-pulse {
-            0%, 100% {
-                box-shadow: 0 0 20px rgba(255, 0, 102, 0.3);
-            }
-            50% {
-                box-shadow: 0 0 40px rgba(255, 0, 102, 0.6), 0 0 60px rgba(255, 0, 102, 0.3);
-            }
-        }
-
-        .server-ip:hover {
-            background: rgba(255, 0, 102, 0.3);
-            transform: scale(1.1) rotate(2deg);
-            box-shadow: 0 0 50px rgba(255, 0, 102, 0.8);
-            border-color: var(--neon-pink);
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 25px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 40px;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 20px 50px;
-            background: linear-gradient(135deg, var(--blood-red), var(--neon-pink));
-            color: white;
-            text-decoration: none;
-            border-radius: 15px;
-            font-weight: bold;
-            font-size: 1.3rem;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            border: none;
-            text-shadow: 0 0 10px rgba(0,0,0,0.5);
-            box-shadow: 0 10px 30px rgba(255, 0, 102, 0.4);
-            animation: button-glow 3s infinite alternate;
-        }
-
-        @keyframes button-glow {
-            0% {
-                box-shadow: 0 10px 30px rgba(255, 0, 102, 0.4);
-            }
-            100% {
-                box-shadow: 0 15px 40px rgba(255, 0, 102, 0.7), 0 0 60px rgba(255, 0, 102, 0.3);
-            }
-        }
-
-        .cta-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.6s ease;
-        }
-
-        .cta-button:hover::before {
-            left: 100%;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 20px 50px rgba(255, 0, 102, 0.6);
-            background: linear-gradient(135deg, var(--neon-pink), var(--purple-neon));
-        }
-
-        /* === ФИЧИ С УЛУЧШЕННЫМИ ЭФФЕКТАМИ === */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 40px;
-            margin: 60px 0;
-        }
-
-        .feature-card {
-            background: rgba(255, 255, 255, 0.08);
-            border: 2px solid rgba(255, 0, 102, 0.4);
-            border-radius: 20px;
-            padding: 40px 30px;
-            backdrop-filter: blur(15px);
-            transition: all 0.5s ease;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--blood-red), var(--neon-pink), var(--purple-neon));
-            animation: border-flow 3s infinite linear;
-        }
-
-        @keyframes border-flow {
-            0% {
-                background-position: -200px 0;
-            }
-            100% {
-                background-position: 200px 0;
-            }
-        }
-
-        .feature-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, transparent 30%, rgba(255,0,102,0.1) 50%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .feature-card:hover::after {
-            opacity: 1;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-15px) scale(1.03);
-            border-color: var(--neon-pink);
-            box-shadow: 0 20px 50px rgba(255, 0, 102, 0.3), 0 0 80px rgba(255, 0, 102, 0.1);
-        }
-
-        .feature-icon {
-            font-size: 4rem;
-            margin-bottom: 25px;
-            text-align: center;
-            animation: icon-float 4s ease-in-out infinite, icon-rotate 10s linear infinite;
-            filter: drop-shadow(0 0 10px var(--blood-red));
-        }
-
-        @keyframes icon-float {
-            0%, 100% { 
-                transform: translateY(0px) rotate(0deg);
-            }
-            50% { 
-                transform: translateY(-15px) rotate(5deg);
-            }
-        }
-
-        @keyframes icon-rotate {
-            0% {
-                filter: drop-shadow(0 0 10px var(--blood-red)) hue-rotate(0deg);
-            }
-            100% {
-                filter: drop-shadow(0 0 10px var(--neon-pink)) hue-rotate(360deg);
-            }
-        }
-
-        .feature-title {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            color: var(--blood-red);
-            text-align: center;
-            text-shadow: 0 0 10px var(--blood-red);
-            animation: title-shake 5s ease-in-out infinite;
-        }
-
-        @keyframes title-shake {
-            0%, 100% {
-                transform: translateX(0);
-            }
-            25% {
-                transform: translateX(-2px);
-            }
-            75% {
-                transform: translateX(2px);
-            }
-        }
-
-        .feature-description {
-            color: var(--text-gray);
-            line-height: 1.7;
-            text-align: center;
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-        }
-
-        .feature-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: linear-gradient(135deg, var(--blood-red), var(--neon-pink));
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            animation: badge-bounce 2s infinite, badge-glow 3s infinite alternate;
-            z-index: 2;
-        }
-
-        @keyframes badge-bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-5px);
-            }
-        }
-
-        @keyframes badge-glow {
-            0% {
-                box-shadow: 0 0 10px var(--blood-red);
-            }
-            100% {
-                box-shadow: 0 0 20px var(--neon-pink), 0 0 30px var(--purple-neon);
-            }
-        }
-
-        /* === СТРАНИЦА ДОНАТОВ С ТГ РЕДИРЕКТОМ === */
-        .donate-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 40px;
-            margin: 60px 0;
-        }
-
-        .donate-card {
-            background: linear-gradient(135deg, rgba(255,0,102,0.2), rgba(0,255,255,0.15));
-            border: 3px solid var(--blood-red);
-            border-radius: 20px;
-            padding: 50px 35px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.5s ease;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-        }
-
-        .donate-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .donate-card:hover::before {
-            opacity: 1;
-        }
-
-        .donate-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 25px 50px rgba(255, 0, 102, 0.4), 0 0 100px rgba(255, 0, 102, 0.2);
-            border-color: var(--neon-pink);
-        }
-
-        .donate-tier {
-            font-size: 1.4rem;
-            color: var(--accent-gold);
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 0 0 10px var(--accent-gold);
-            animation: tier-glow 4s infinite alternate;
-        }
-
-        @keyframes tier-glow {
-            0% {
-                text-shadow: 0 0 10px var(--accent-gold);
-            }
-            100% {
-                text-shadow: 0 0 20px var(--accent-gold), 0 0 30px var(--new-year-gold);
-            }
-        }
-
-        .donate-price {
-            font-size: 3.5rem;
-            font-weight: bold;
-            color: var(--text-light);
-            margin: 25px 0;
-            text-shadow: 0 0 20px var(--blood-red);
-            animation: price-pulse 2s infinite;
-        }
-
-        @keyframes price-pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-        }
-
-        .donate-features {
-            list-style: none;
-            margin: 30px 0;
-            text-align: left;
-        }
-
-        .donate-features li {
-            padding: 12px 0;
-            color: var(--text-gray);
-            position: relative;
-            padding-left: 35px;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-        }
-
-        .donate-features li:hover {
-            color: var(--text-light);
-            transform: translateX(5px);
-        }
-
-        .donate-features li::before {
-            content: '⚡';
-            position: absolute;
-            left: 0;
-            color: var(--new-year-green);
-            font-weight: bold;
-            text-shadow: 0 0 10px var(--new-year-green);
-            animation: feature-icon-bounce 2s infinite;
-        }
-
-        @keyframes feature-icon-bounce {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.2);
-            }
-        }
-
-        .donate-button {
-            display: inline-block;
-            padding: 18px 40px;
-            background: var(--blood-red);
-            color: white;
-            text-decoration: none;
-            border-radius: 12px;
-            font-weight: bold;
-            transition: all 0.4s ease;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            border: none;
-            text-shadow: 0 0 10px rgba(0,0,0,0.5);
-            width: 100%;
-            margin-top: 25px;
-            font-size: 1.2rem;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(255, 0, 102, 0.4);
-        }
-
-        .donate-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.6s ease;
-        }
-
-        .donate-button:hover::before {
-            left: 100%;
-        }
-
-        .donate-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 35px rgba(255, 0, 102, 0.6), 0 0 60px rgba(255, 0, 102, 0.3);
-            background: var(--neon-pink);
-        }
-
-        /* === СТРАНИЦА ПОДДЕРЖКИ === */
-        .support-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 35px;
-            margin: 60px 0;
-        }
-
-        .support-card {
-            background: rgba(255, 255, 255, 0.08);
-            border: 2px solid var(--accent-blue);
-            border-radius: 20px;
-            padding: 40px 30px;
-            text-align: center;
-            transition: all 0.5s ease;
-            cursor: pointer;
-            backdrop-filter: blur(15px);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .support-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, transparent 30%, rgba(0,255,255,0.1) 50%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .support-card:hover::before {
-            opacity: 1;
-        }
-
-        .support-card:hover {
-            transform: translateY(-10px) scale(1.03);
-            border-color: var(--neon-pink);
-            box-shadow: 0 20px 50px rgba(0, 255, 255, 0.3), 0 0 80px rgba(0, 255, 255, 0.1);
-        }
-
-        .support-icon {
-            font-size: 4rem;
-            margin-bottom: 25px;
-            animation: support-icon-float 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 15px var(--accent-blue));
-        }
-
-        @keyframes support-icon-float {
-            0%, 100% { 
-                transform: translateY(0px) rotate(0deg);
-            }
-            50% { 
-                transform: translateY(-10px) rotate(5deg);
-            }
-        }
-
-        .support-title {
-            font-size: 1.7rem;
-            margin-bottom: 20px;
-            color: var(--accent-blue);
-            text-shadow: 0 0 10px var(--accent-blue);
-            animation: support-title-glow 4s infinite alternate;
-        }
-
-        @keyframes support-title-glow {
-            0% {
-                text-shadow: 0 0 10px var(--accent-blue);
-            }
-            100% {
-                text-shadow: 0 0 20px var(--accent-blue), 0 0 30px var(--neon-pink);
-            }
-        }
-
-        .support-description {
-            color: var(--text-gray);
-            margin-bottom: 30px;
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        .support-link {
-            display: inline-block;
-            padding: 15px 35px;
-            background: var(--accent-blue);
-            color: var(--dark-bg);
-            text-decoration: none;
-            border-radius: 12px;
-            font-weight: bold;
-            transition: all 0.4s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0, 255, 255, 0.4);
-        }
-
-        .support-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.6s ease;
-        }
-
-        .support-link:hover::before {
-            left: 100%;
-        }
-
-        .support-link:hover {
-            background: var(--neon-pink);
-            transform: scale(1.05);
-            box-shadow: 0 12px 30px rgba(255, 0, 102, 0.5);
-        }
-
-        /* === 2026 ДЕКОРАЦИИ И ФОНОВЫЕ ЭФФЕКТЫ === */
-        .new-year-decorations {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .decoration {
-            position: absolute;
-            font-size: 28px;
-            animation: decoration-float 15s infinite linear;
-            opacity: 0.7;
-            text-shadow: 0 0 10px currentColor;
-        }
-
-        @keyframes decoration-float {
-            0% {
-                transform: translateY(0) rotate(0deg) scale(0.8);
-            }
-            100% {
-                transform: translateY(-100vh) rotate(360deg) scale(1.2);
-            }
-        }
-
-        .year-2026 {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 10rem;
-            color: rgba(255, 0, 102, 0.08);
-            font-weight: bold;
-            z-index: -2;
-            user-select: none;
-            animation: year-pulse 6s infinite alternate, year-rotate 20s infinite linear;
-            text-shadow: 0 0 50px rgba(255, 0, 102, 0.3);
-        }
-
-        @keyframes year-pulse {
-            0% { 
-                opacity: 0.05; 
-                transform: translate(-50%, -50%) scale(1);
-            }
-            100% { 
-                opacity: 0.12; 
-                transform: translate(-50%, -50%) scale(1.1);
-            }
-        }
-
-        @keyframes year-rotate {
-            0% {
-                transform: translate(-50%, -50%) rotate(0deg);
-            }
-            100% {
-                transform: translate(-50%, -50%) rotate(360deg);
-            }
-        }
-
-        /* === ПОДВАЛ С ЭФФЕКТАМИ === */
-        .footer {
-            background: rgba(5, 5, 5, 0.95);
-            border-top: 3px solid var(--blood-red);
-            padding: 50px 0 30px;
-            margin-top: 100px;
-            position: relative;
-            backdrop-filter: blur(20px);
-        }
-
-        .footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, transparent, rgba(255,0,102,0.1));
-            pointer-events: none;
-        }
-
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 30px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 50px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .footer-section h3 {
-            color: var(--blood-red);
-            margin-bottom: 25px;
-            font-size: 1.5rem;
-            text-shadow: 0 0 10px var(--blood-red);
-            animation: footer-title-glow 5s infinite alternate;
-        }
-
-        @keyframes footer-title-glow {
-            0% {
-                text-shadow: 0 0 10px var(--blood-red);
-            }
-            100% {
-                text-shadow: 0 0 20px var(--blood-red), 0 0 30px var(--neon-pink);
-            }
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-
-        .footer-links a {
-            color: var(--text-gray);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            font-size: 1.1rem;
-            position: relative;
-            padding-left: 15px;
-        }
-
-        .footer-links a::before {
-            content: '▶';
-            position: absolute;
-            left: 0;
-            color: var(--blood-red);
-            font-size: 0.8rem;
-            transition: transform 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--blood-red);
-            transform: translateX(5px);
-        }
-
-        .footer-links a:hover::before {
-            transform: translateX(3px);
-        }
-
-        .copyright {
-            text-align: center;
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 0, 102, 0.3);
-            color: var(--text-gray);
-            font-size: 1rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* === АДАПТИВНОСТЬ ДЛЯ РАЗНЫХ УСТРОЙСТВ === */
-        @media (max-width: 1200px) {
-            .container {
-                padding: 40px 20px;
-            }
-            
-            .hero-title {
-                font-size: 4rem;
-            }
-            
-            .section-title {
-                font-size: 3.5rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .nav-menu {
-                flex-direction: column;
-                gap: 15px;
-                width: 100%;
-            }
-
-            .nav-link {
-                text-align: center;
-                width: 100%;
-            }
-
-            .hero-title {
-                font-size: 3rem;
-            }
-
-            .section-title {
-                font-size: 2.5rem;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .donate-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .support-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .year-2026 {
-                font-size: 6rem;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .cta-button {
-                width: 100%;
-                max-width: 300px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-            
-            .section-title {
-                font-size: 2rem;
-            }
-            
-            .server-ip {
-                font-size: 1.2rem;
-                padding: 15px 25px;
-            }
-            
-            .year-2026 {
-                font-size: 4rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Система частиц -->
-    <div class="particles-container" id="particles"></div>
+/* === ОСНОВНЫЕ СТИЛИ И ПЕРЕМЕННЫЕ === */
+:root {
+    --blood-red: #ff0066;
+    --christmas-red: #ff0000;
+    --christmas-green: #00ff00;
+    --christmas-gold: #ffd700;
+    --snow-white: #ffffff;
+    --dark-bg: #0a0a0a;
+    --darker-bg: #050505;
+    --text-light: #ffffff;
+    --text-gray: #cccccc;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #0a0a0a 0%, #001a00 100%);
+    color: var(--text-light);
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* === НОВОГОДНИЙ ФОН С ЁЛКАМИ === */
+.christmas-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -3;
+}
+
+.snowflakes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.snowflake {
+    position: absolute;
+    color: var(--snow-white);
+    font-size: 20px;
+    animation: snow-fall 10s linear infinite;
+    user-select: none;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes snow-fall {
+    0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.trees {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+.tree {
+    font-size: 4rem;
+    animation: tree-glow 3s infinite alternate;
+    text-shadow: 0 0 20px var(--christmas-green);
+}
+
+@keyframes tree-glow {
+    0% {
+        text-shadow: 0 0 20px var(--christmas-green);
+    }
+    100% {
+        text-shadow: 0 0 40px var(--christmas-green), 0 0 60px var(--christmas-gold);
+    }
+}
+
+.tree-1 { animation-delay: 0s; }
+.tree-2 { animation-delay: 1s; }
+.tree-3 { animation-delay: 2s; }
+.tree-4 { animation-delay: 1.5s; }
+
+.decorations {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.decoration {
+    position: absolute;
+    font-size: 24px;
+    animation: decoration-float 15s infinite linear;
+    opacity: 0.7;
+}
+
+@keyframes decoration-float {
+    0% {
+        transform: translateY(0) rotate(0deg) scale(0.8);
+    }
+    100% {
+        transform: translateY(-100vh) rotate(360deg) scale(1.2);
+    }
+}
+
+/* === СИСТЕМА ЧАСТИЦ === */
+.particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -2;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--christmas-red);
+    border-radius: 50%;
+    animation: particle-float 20s infinite linear;
+    opacity: 0;
+}
+
+@keyframes particle-float {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.7;
+    }
+    90% {
+        opacity: 0.3;
+    }
+    100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* === ШАПКА === */
+.header {
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 2px solid var(--christmas-red);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 15px 0;
+    box-shadow: 0 0 30px rgba(255, 0, 102, 0.3);
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+}
+
+.logo {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: var(--christmas-red);
+    text-shadow: 0 0 20px var(--christmas-red), 0 0 40px var(--blood-red);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+    text-shadow: 0 0 30px var(--christmas-red), 0 0 60px var(--blood-red);
+}
+
+.nav-menu {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+}
+
+.nav-link {
+    color: var(--text-light);
+    text-decoration: none;
+    font-weight: bold;
+    padding: 12px 25px;
+    border-radius: 12px;
+    transition: all 0.4s ease;
+    background: rgba(255, 0, 102, 0.15);
+    border: 2px solid var(--christmas-red);
+    font-size: 1rem;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background: var(--christmas-red);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255, 0, 102, 0.5);
+}
+
+/* === ОСНОВНОЙ КОНТЕНТ === */
+.main-content {
+    margin-top: 100px;
+    min-height: calc(100vh - 180px);
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 50px 30px;
+}
+
+.page {
+    display: none;
+    animation: page-fade 0.5s ease;
+}
+
+@keyframes page-fade {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.page.active {
+    display: block;
+}
+
+.section-title {
+    font-size: 3.5rem;
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--christmas-red);
+    text-shadow: 0 0 20px var(--christmas-red);
+    animation: title-glow 3s infinite alternate;
+}
+
+@keyframes title-glow {
+    0% {
+        text-shadow: 0 0 20px var(--christmas-red);
+    }
+    100% {
+        text-shadow: 0 0 30px var(--christmas-red), 0 0 60px var(--blood-red);
+    }
+}
+
+.section-subtitle {
+    text-align: center;
+    font-size: 1.3rem;
+    color: var(--text-gray);
+    margin-bottom: 50px;
+}
+
+/* === ГЛАВНАЯ СТРАНИЦА === */
+.hero {
+    text-align: center;
+    padding: 100px 0;
+    background: radial-gradient(circle at center, rgba(255,0,102,0.1) 0%, transparent 70%);
+    position: relative;
+}
+
+.hero-title {
+    font-size: 4.5rem;
+    margin-bottom: 20px;
+    background: linear-gradient(45deg, var(--christmas-red), var(--christmas-gold), var(--christmas-green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbow-text 8s infinite linear;
+}
+
+@keyframes rainbow-text {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+    color: var(--text-gray);
+}
+
+.server-info {
+    background: rgba(255, 255, 255, 0.1);
+    border: 3px solid var(--christmas-red);
+    border-radius: 20px;
+    padding: 30px;
+    margin: 30px auto;
+    max-width: 600px;
+    backdrop-filter: blur(10px);
+}
+
+.server-ip {
+    font-size: 1.4rem;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.server-ip:hover {
+    background: rgba(255, 0, 102, 0.2);
+    transform: scale(1.02);
+}
+
+.ip-icon {
+    margin-right: 10px;
+}
+
+.server-stats {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--christmas-gold);
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text-gray);
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.cta-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 40px;
+    background: linear-gradient(135deg, var(--christmas-red), var(--blood-red));
+    color: white;
+    text-decoration: none;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    transition: all 0.4s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.cta-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(255, 0, 102, 0.6);
+}
+
+.telegram-btn {
+    background: linear-gradient(135deg, #0088cc, #00aced);
+}
+
+/* === СЕКЦИИ === */
+.events-section {
+    margin: 80px 0;
+}
+
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.event-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid var(--christmas-gold);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(10px);
+}
+
+.event-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(255, 215, 0, 0.3);
+}
+
+.event-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.event-timer {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--christmas-gold);
+    margin-top: 15px;
+    font-family: 'Courier New', monospace;
+}
+
+.event-badge {
+    background: var(--christmas-green);
+    color: black;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    margin-top: 15px;
+    display: inline-block;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 0, 102, 0.4);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(10px);
+    position: relative;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--christmas-red);
+    box-shadow: 0 20px 40px rgba(255, 0, 102, 0.3);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.feature-title {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: var(--christmas-red);
+}
+
+.feature-description {
+    color: var(--text-gray);
+    line-height: 1.6;
+}
+
+.feature-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--christmas-red);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* === СТРАНИЦА ДОНАТА === */
+.donate-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.donate-card {
+    background: linear-gradient(135deg, rgba(255,0,102,0.1), rgba(0,255,0,0.05));
+    border: 3px solid var(--christmas-red);
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(10px);
+    position: relative;
+}
+
+.donate-card.featured {
+    border-color: var(--christmas-gold);
+    transform: scale(1.05);
+}
+
+.donate-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 50px rgba(255, 0, 102, 0.4);
+}
+
+.donate-card.featured:hover {
+    transform: scale(1.05) translateY(-10px);
+}
+
+.donate-badge {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: var(--christmas-gold);
+}
+
+.donate-price {
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 20px 0;
+    color: var(--text-light);
+    text-shadow: 0 0 20px var(--christmas-red);
+}
+
+.donate-sale {
+    background: var(--christmas-green);
+    color: black;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.donate-features {
+    list-style: none;
+    margin: 25px 0;
+    text-align: left;
+}
+
+.donate-features li {
+    padding: 10px 0;
+    color: var(--text-gray);
+    position: relative;
+    padding-left: 35px;
+}
+
+.donate-features li::before {
+    content: '✅';
+    position: absolute;
+    left: 0;
+}
+
+.donate-button {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    background: var(--christmas-red);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+.donate-button:hover {
+    background: var(--blood-red);
+    transform: scale(1.05);
+}
+
+.donate-button.featured-btn {
+    background: var(--christmas-gold);
+    color: black;
+}
+
+.bonus-section {
+    background: rgba(255, 215, 0, 0.1);
+    border: 2px solid var(--christmas-gold);
+    border-radius: 20px;
+    padding: 30px;
+    margin-top: 50px;
+    text-align: center;
+}
+
+.bonus-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.bonus-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+/* === ПОДДЕРЖКА === */
+.support-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.support-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid var(--christmas-green);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(10px);
+}
+
+.support-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--christmas-red);
+}
+
+.support-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.support-title {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: var(--christmas-green);
+}
+
+.support-description {
+    color: var(--text-gray);
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.support-link {
+    display: inline-block;
+    padding: 15px 30px;
+    background: var(--christmas-green);
+    color: black;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.support-link:hover {
+    background: var(--christmas-red);
+    color: white;
+    transform: scale(1.05);
+}
+
+.quick-links {
+    margin-top: 50px;
+}
+
+.links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.quick-link {
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid var(--christmas-red);
+    border-radius: 10px;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.quick-link:hover {
+    background: var(--christmas-red);
+    transform: translateY(-3px);
+}
+
+/* === ПРАВИЛА === */
+.rules-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.rules-section {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+}
+
+.rules-section h3 {
+    color: var(--christmas-gold);
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.rules-list {
+    list-style: none;
+}
+
+.rules-list li {
+    padding: 10px 0;
+    color: var(--text-gray);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.rules-list li:last-child {
+    border-bottom: none;
+}
+
+.rules-note {
+    text-align: center;
+    margin-top: 40px;
+    padding: 30px;
+    background: rgba(255, 0, 0, 0.1);
+    border-radius: 20px;
+}
+
+.rules-button {
+    padding: 15px 30px;
+    background: var(--christmas-red);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+}
+
+.rules-button:hover {
+    background: var(--blood-red);
+    transform: scale(1.05);
+}
+
+/* === ПОДВАЛ === */
+.footer {
+    background: rgba(5, 5, 5, 0.95);
+    border-top: 3px solid var(--christmas-red);
+    padding: 50px 0 30px;
+    margin-top: 100px;
+    backdrop-filter: blur(20px);
+}
+
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+}
+
+.footer-section h3 {
+    color: var(--christmas-red);
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: var(--text-gray);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.footer-links a:hover {
+    color: var(--christmas-red);
+    transform: translateX(5px);
+}
+
+.copyright {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 0, 102, 0.3);
+    color: var(--text-gray);
+}
+
+/* === АДАПТИВНОСТЬ === */
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .nav-menu {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .nav-link {
+        text-align: center;
+        width: 100%;
+    }
+
+    .hero-title {
+        font-size: 3rem;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+    }
+
+    .server-stats {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cta-button {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .donate-card.featured {
+        transform: none;
+    }
     
-    <!-- 2026 снег -->
-    <div class="snow-container" id="snow"></div>
-    
-    <!-- Пульсирующие облака -->
-    <div class="pulse-clouds">
-        <div class="pulse-cloud" style="top: 10%; left: 20%;"></div>
-        <div class="pulse-cloud" style="top: 60%; left: 70%;"></div>
-        <div class="pulse-cloud" style="top: 30%; left: 50%;"></div>
-    </div>
-    
-    <!-- Декорация 2026 -->
-    <div class="year-2026">2026</div>
-
-    <!-- Шапка сайта -->
-    <header class="header">
-        <nav class="nav-container">
-            <a href="#" class="logo">Bloody Butterfly</a>
-            <ul class="nav-menu">
-                <li><a href="#" class="nav-link active" data-page="home">Главная</a></li>
-                <li><a href="#" class="nav-link" data-page="donate">Донат</a></li>
-                <li><a href="#" class="nav-link" data-page="support">Поддержка</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Основной контент -->
-    <main class="main-content">
-        <div class="container">
-            <!-- Главная страница -->
-            <section id="home" class="page active">
-                <div class="hero">
-                    <h1 class="hero-title">Bloody Butterfly</h1>
-                    <p class="hero-subtitle">Официальный сервер 2026 | Уникальные возможности и эксклюзивный контент</p>
-                    <div class="server-ip" id="serverIp">play.bloody-butterfly.ru</div>
-                    <div class="cta-buttons">
-                        <button class="cta-button" onclick="copyIP()">Скопировать IP</button>
-                        <button class="cta-button" onclick="redirectToTelegram('join')">Присоединиться</button>
-                    </div>
-                </div>
-
-                <h2 class="section-title">Наши возможности</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">⚡</div>
-                        <h3 class="feature-title">Высокая производительность</h3>
-                        <p class="feature-description">Мощное железо обеспечивает стабильную работу без лагов и просадок FPS даже при максимальной нагрузке</p>
-                        <div class="feature-badge">NEW</div>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🛡️</div>
-                        <h3 class="feature-title">Защита от читеров</h3>
-                        <p class="feature-description">Современная античит система с машинным обучением для абсолютно честной игры</p>
-                        <div class="feature-badge">PRO</div>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🎮</div>
-                        <h3 class="feature-title">Уникальные моды</h3>
-                        <p class="feature-description">Эксклюзивные модификации, созданные специально для нашего сообщества</p>
-                        <div class="feature-badge">EXCLUSIVE</div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Страница доната -->
-            <section id="donate" class="page">
-                <h2 class="section-title">Поддержать проект</h2>
-                <div class="donate-grid">
-                    <div class="donate-card">
-                        <div class="donate-tier">Базовый</div>
-                        <div class="donate-price">299₽</div>
-                        <ul class="donate-features">
-                            <li>Префикс в чате</li>
-                            <li>Доступ к базовым командам</li>
-                            <li>Цветной ник</li>
-                            <li>Возможность установки дома</li>
-                            <li>Доступ к /tpa</li>
-                        </ul>
-                        <button class="donate-button" onclick="redirectToTelegram('basic')">Оформить донат</button>
-                    </div>
-                    <div class="donate-card">
-                        <div class="donate-tier">Продвинутый</div>
-                        <div class="donate-price">799₽</div>
-                        <ul class="donate-features">
-                            <li>Все возможности Базового</li>
-                            <li>Эксклюзивные предметы</li>
-                            <li>Приоритетная поддержка</li>
-                            <li>Доступ к /fly</li>
-                            <li>Личный варп-пункт</li>
-                            <li>Увеличенный лимит домов</li>
-                        </ul>
-                        <button class="donate-button" onclick="redirectToTelegram('advanced')">Оформить донат</button>
-                    </div>
-                    <div class="donate-card">
-                        <div class="donate-tier">Премиум</div>
-                        <div class="donate-price">1499₽</div>
-                        <ul class="donate-features">
-                            <li>Все возможности Продвинутого</li>
-                            <li>Личный телепорт</li>
-                            <li>Доступ к бета-тестированию</li>
-                            <li>Эксклюзивный префикс</li>
-                            <li>Неограниченные варпы</li>
-                            <li>Приоритет в очередях</li>
-                            <li>Доступ к закрытым ивентам</li>
-                        </ul>
-                        <button class="donate-button" onclick="redirectToTelegram('premium')">Оформить донат</button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Страница поддержки -->
-            <section id="support" class="page">
-                <h2 class="section-title">Поддержка</h2>
-                <div class="support-grid">
-                    <div class="support-card">
-                        <div class="support-icon">💬</div>
-                        <h3 class="support-title">Discord</h3>
-                        <p class="support-description">Присоединяйтесь к нашему Discord сообществу для общения, помощи и участия в ивентах</p>
-                        <button class="support-link" onclick="redirectToTelegram('discord')">Присоединиться</button>
-                    </div>
-                    <div class="support-card">
-                        <div class="support-icon">📱</div>
-                        <h3 class="support-title">Telegram</h3>
-                        <p class="support-description">Наш Telegram канал с новостями, обновлениями и эксклюзивными анонсами</p>
-                        <button class="support-link" onclick="redirectToTelegram('news')">Подписаться</button>
-                    </div>
-                    <div class="support-card">
-                        <div class="support-icon">❓</div>
-                        <h3 class="support-title">Помощь</h3>
-                        <p class="support-description">Техническая поддержка, ответы на частые вопросы и руководства по игре</p>
-                        <button class="support-link" onclick="redirectToTelegram('help')">Получить помощь</button>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </main>
-
-    <!-- Подвал -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Bloody Butterfly</h3>
-                <p>Официальный сервер 2026 с уникальным контентом и активным сообществом</p>
-            </div>
-            <div class="footer-section">
-                <h3>Быстрые ссылки</h3>
-                <ul class="footer-links">
-                    <li><a href="#" data-page="home">Главная</a></li>
-                    <li><a href="#" data-page="donate">Донат</a></li>
-                    <li><a href="#" data-page="support">Поддержка</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Контакты</h3>
-                <ul class="footer-links">
-                    <li><a href="#" onclick="redirectToTelegram('contact')">Telegram</a></li>
-                    <li><a href="#" onclick="redirectToTelegram('discord')">Discord</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="copyright">
-            <p>&copy; 2026 Bloody Butterfly. Все права защищены.</p>
-        </div>
-    </footer>
-
-    <script>
-        // Инициализация частиц
-        function initParticles() {
-            const container = document.getElementById('particles');
-            const particleCount = 50;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                
-                // Случайная позиция
-                particle.style.left = Math.random() * 100 + 'vw';
-                particle.style.top = Math.random() * 100 + 'vh';
-                
-                // Случайная задержка анимации
-                particle.style.animationDelay = Math.random() * 20 + 's';
-                
-                // Случайный размер
-                const size = Math.random() * 6 + 2;
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
-                
-                // Случайный цвет
-                const colors = ['var(--blood-red)', 'var(--neon-pink)', 'var(--accent-blue)', 'var(--purple-neon)'];
-                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                
-                container.appendChild(particle);
-            }
-        }
-
-        // Инициализация снега
-        function initSnow() {
-            const container = document.getElementById('snow');
-            const snowflakeCount = 30;
-            const snowflakes = ['❄', '✦', '❅', '❆', '•'];
-            
-            for (let i = 0; i < snowflakeCount; i++) {
-                const snowflake = document.createElement('div');
-                snowflake.className = 'snowflake';
-                snowflake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
-                
-                // Случайная позиция
-                snowflake.style.left = Math.random() * 100 + 'vw';
-                
-                // Случайная задержка и длительность
-                const delay = Math.random() * 15;
-                const duration = 10 + Math.random() * 20;
-                snowflake.style.animationDelay = delay + 's';
-                snowflake.style.animationDuration = duration + 's';
-                
-                // Случайный цвет
-                const colors = ['var(--blood-red)', 'var(--neon-pink)', 'var(--accent-blue)', 'var(--text-light)'];
-                snowflake.style.color = colors[Math.floor(Math.random() * colors.length)];
-                
-                container.appendChild(snowflake);
-            }
-        }
-
-        // Навигация по страницам
-        document.querySelectorAll('.nav-link, .footer-links a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const pageId = this.getAttribute('data-page');
-                
-                // Обновляем активные классы в навигации
-                document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Переключаем страницы
-                document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-                document.getElementById(pageId).classList.add('active');
-                
-                // Прокрутка вверх
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-        });
-
-        // Копирование IP адреса
-        function copyIP() {
-            const ip = document.getElementById('serverIp').textContent;
-            navigator.clipboard.writeText(ip).then(() => {
-                alert('IP скопирован в буфер обмена!');
-            }).catch(() => {
-                alert('Ошибка копирования');
-            });
-        }
-
-        // Перенаправление в Telegram
-        function redirectToTelegram(type) {
-            const telegramUrl = 'https://t.me/bloody_butterfly_support';
-            window.open(telegramUrl, '_blank');
-        }
-
-        // Инициализация при загрузке
-        document.addEventListener('DOMContentLoaded', function() {
-            initParticles();
-            initSnow();
-            
-            // Добавляем эффект параллакса для фоновых элементов
-            document.addEventListener('mousemove', function(e) {
-                const clouds = document.querySelectorAll('.pulse-cloud');
-                const x = e.clientX / window.innerWidth;
-                const y = e.clientY / window.innerHeight;
-                
-                clouds.forEach((cloud, index) => {
-                    const speed = (index + 1) * 0.5;
-                    const xMove = x * speed * 50;
-                    const yMove = y * speed * 50;
-                    cloud.style.transform = `translate(${xMove}px, ${yMove}px) scale(${1 + speed * 0.1})`;
-                });
-            });
-        });
-
-        // Эффект печатной машинки для подзаголовка
-        const heroSubtitle = document.querySelector('.hero-subtitle');
-        if (heroSubtitle) {
-            const originalText = heroSubtitle.textContent;
-            heroSubtitle.textContent = '';
-            let i = 0;
-            
-            function typeWriter() {
-                if (i < originalText.length) {
-                    heroSubtitle.textContent += originalText.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, 50);
-                }
-            }
-            
-            // Запускаем после небольшой задержки
-            setTimeout(typeWriter, 1000);
-        }
-    </script>
-</body>
-</html>
+    .donate-card.featured:hover {
+        transform: translateY(-10px);
+    }
+}
