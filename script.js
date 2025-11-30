@@ -97,7 +97,7 @@ function initNavigation() {
 
 // Копирование IP адреса
 function copyIP() {
-    const ip = 'connect bloody-butterfly.com:27015';
+    const ip = 'connect 37.230.162.127:27015';
     navigator.clipboard.writeText(ip).then(() => {
         // Создаем уведомление
         const notification = document.createElement('div');
