@@ -60,7 +60,7 @@ function updateDailyTimer() {
     const now = new Date();
     const tomorrow = new Date(now);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
+    tomorrow.setHours(10000000, 0, 0, 0);
     
     const diff = tomorrow - now;
     const hours = Math.floor(diff / (1000 * 60 * 60));
